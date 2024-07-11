@@ -1,15 +1,12 @@
-const Transaction=()=>{
-
-    fetch("https://thunderapi.azurewebsites.net/api/Transaction", {
-        method: "GET",
-      })
-        .then(async(res) => {
-          
-  var transactionCard = document.getElementById("card-container");
-  var transactions= await res.json();
-  var cardsHTML = transactions.map(transaction => {
-      
-      return `
+const Transaction = () => {
+  fetch("https://thunderapi.azurewebsites.net/api/Transaction", {
+    method: "GET",
+  })
+    .then(async (res) => {
+      var transactionCard = document.getElementById("card-container");
+      var transactions = await res.json();
+      var cardsHTML = transactions.map((transaction) => {
+        return `
       <div class="card" style="width: 18rem;">
   <div class="card-body">
     <h5 class="card-title">Transaction Number : ${transaction.accountId}</h5>
@@ -18,10 +15,21 @@ const Transaction=()=>{
   </div>
 </div>
       `;
-  });
+      });
 
-  transactionCard.innerHTML = cardsHTML.join('');
-      })
-        .then(console.log);
-    };
-  
+      transactionCard.innerHTML = cardsHTML.join("");
+    })
+    .then(console.log);
+};
+
+function showToast(message, duration = 1000, color) {
+  console.log("Toasted");
+  Toastify({
+    text: message,
+    duration: duration,
+    gravity: "top",
+    position: "center",
+    close: true,
+    backgroundColor: color,
+  }).showToast();
+}

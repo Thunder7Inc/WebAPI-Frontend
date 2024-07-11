@@ -86,3 +86,15 @@ const CreateAccount = (event) => {
       console.error("Error fetching data:", error);
     });
 };
+
+function showToast(message, duration = 1000, color) {
+  console.log("Toasted");
+  Toastify({
+    text: message,
+    duration: duration,
+    gravity: "top",
+    position: "center",
+    close: true,
+    backgroundColor: color,
+  }).showToast();
+}

@@ -1,35 +1,46 @@
-const depositBtn = document.getElementById('depositBtn')
+const depositBtn = document.getElementById("depositBtn");
 
-depositBtn.addEventListener('submit',  (e) => {
+function showToast(message, duration = 1000, color) {
+  console.log("Toasted");
+  Toastify({
+    text: message,
+    duration: duration,
+    gravity: "top",
+    position: "center",
+    close: true,
+    backgroundColor: color,
+  }).showToast();
+}
+
+depositBtn.addEventListener("click", (e) => {
   e.preventDefault();
+  const accountNumber = document.getElementById("accountNumber").value;
+  const amount = document.getElementById("amount").value;
+  const pin = document.getElementById("pin").value;
 
-  console.log('Hello From JS');
-  const accountNumber = document.getElementById('accountNumber').value;
-  const amount = document.getElementById('amount').value;
-  const pin = document.getElementById('pin').value;
-
-  fetch('https://thunderapi.azurewebsites.net/api/Transaction', {
+  fetch("https://thunderapi.azurewebsites.net/api/Transaction", {
     method: "POST",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      "accountId": accountNumber,
-      "type": 0,
-      "amount": amount,
-      "pin": pin
+      accountId: accountNumber,
+      type: 0,
+      amount: amount,
+      pin: pin,
+    }),
+  })
+    .then(async (res) => {
+      if (!res.ok) {
+        const error = await res.json();
+        throw new Error(error.message);
+      }
+      res.json();
+      showToast("Successfully deposited", 1000, "green");
     })
-  })
-  .then(async (res) => {
-    if (!res.ok) {
-      const error = await res.json();
-      throw new Error(error.message);
-    }
-    res.json();
-    showToast("Successfully deposited", 1000, '#ec4899');
-  })
-  .catch(error => {
-    showToast(error, 1000, '#de0a26');
-    console.error('Error fetching data:', error);
-  });
+    .catch((error) => {
+      showToast(error, 3000, "red");
+      console.error("Error fetching data:", error);
+    });
+  document.getElementById("depositForm").reset();
 });
