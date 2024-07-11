@@ -74,3 +74,31 @@ async function validateForm(event) {
     }
   }
 }
+
+const CreateAccount=()=>{
+
+  const name = document.getElementById('name').value;
+  const pin = document.getElementById('pin').value;
+
+  fetch(`http://localhost:5023/api/Admin/RegisterMenu` , {
+    method: "POST",
+    headers: { 
+      "Content-Type" : "application/json"
+     },
+    body: JSON.stringify({
+     
+          "name":name,
+          "pin":pin,
+          
+    
+    }),
+  })
+    .then(res => {if (!res.ok) {
+          throw new Error('Network response was not ok');
+      }
+      res.json();showToast("Successfully created",1000,'#ec4899')})
+    .catch(error => {
+  showToast('Error creating account!',1000,'#de0a26');
+  console.error('Error fetching data:', error);
+});;
+}
