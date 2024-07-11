@@ -1,4 +1,4 @@
-var IP = "http://localhost:8000/api";
+var IP = "http://thunderapi.azurewebsites.net/api/v1";
 
 document.addEventListener("DOMContentLoaded", function () {
   localStorage.clear();
@@ -7,98 +7,82 @@ document.addEventListener("DOMContentLoaded", function () {
 async function validateForm(event) {
   event.preventDefault();
 
-  document.getElementById("nameError").innerText = "";
-  document.getElementById("passwordError").innerText = "";
-
   const username = document.getElementById("username").value.trim();
   const password = document.getElementById("password").value.trim();
 
   let isValid = true;
 
   if (username === "") {
-    document.getElementById("nameError").innerText = "Username is required.";
-    document.getElementById("username").style.borderColor = "red";
-
     isValid = false;
   } else if (username.length < 1) {
-    document.getElementById("nameError").innerText =
-      "Username must be at least 5 characters long.";
-    document.getElementById("username").style.borderColor = "red";
     isValid = false;
   }
 
   if (password === "") {
-    document.getElementById("passwordError").innerText =
-      "Password is required.";
-    document.getElementById("password").style.borderColor = "red";
-
     isValid = false;
   } else if (password.length < 3) {
-    document.getElementById("passwordError").innerText =
-      "Password must be at least 8 characters long.";
-    document.getElementById("password").style.borderColor = "red";
     isValid = false;
   }
 
   if (isValid) {
     try {
-      const response = await fetch(`${IP}/UserLoginRegister/Login`, {
+      const response = await fetch(`${IP}/Account`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ userId: username, password: password }),
+        body: JSON.stringify({
+          name: username,
+          pin: password,
+        }),
       });
 
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
 
-      const data = await response.json();
-      localStorage.setItem("token", data.token);
-      const role = localStorage.setItem("role", data.role);
-      localStorage.setItem("username", data.userID);
-
-      if (data.role === "Admin") {
-        window.location.href = "../Admin-Page/admin-page.html";
-      } else if (data.role === "User") {
-        window.location.href = "../Home-Page/home.html";
-      } else {
-        window.location.href = "../Landing-Page/landing.html";
-      }
+      showToast("Account created successfully", 1000, "#37bc6c"); // Add toast for successful account creation
     } catch (error) {
       console.error("Error:", error);
-      document.getElementById("incorrectUsernamePassword").innerText =
-        "Incorrect username or password.";
-      document.getElementById("incorrectUsernamePassword").style.color = "red";
     }
   }
 }
+const CreateAccount = (event) => {
+  event.preventDefault();
 
-const CreateAccount=()=>{
+  const name = document.getElementById("name").value;
+  const pin = document.getElementById("pin").value;
 
-  const name = document.getElementById('name').value;
-  const pin = document.getElementById('pin').value;
-
-  fetch(`http://localhost:5023/api/Admin/RegisterMenu` , {
+  fetch(`https://thunderapi.azurewebsites.net/api/v1/Account`, {
     method: "POST",
-    headers: { 
-      "Content-Type" : "application/json"
-     },
+    headers: {
+      "Content-Type": "application/json",
+      accept: "text/plain",
+    },
     body: JSON.stringify({
-     
-          "name":name,
-          "pin":pin,
-          
-    
+      name: name,
+      pin: pin,
     }),
   })
-    .then(res => {if (!res.ok) {
-          throw new Error('Network response was not ok');
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error("Network response was not ok");
       }
-      res.json();showToast("Successfully created",1000,'#ec4899')})
-    .catch(error => {
-  showToast('Error creating account!',1000,'#de0a26');
-  console.error('Error fetching data:', error);
-});;
-}
+      return res.json();
+    })
+    .then((data) => {
+      Toastify({
+        text: `Account created successfully! ID: ${data.id}`,
+        duration: 3000,
+        backgroundColor: "#28a745",
+      }).showToast();
+    })
+    .catch((error) => {
+      Toastify({
+        text: "Error creating account!",
+        duration: 3000,
+        backgroundColor: "#dc3545",
+      }).showToast();
+      console.error("Error fetching data:", error);
+    });
+};
