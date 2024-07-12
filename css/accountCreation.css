@@ -1,15 +1,19 @@
 /* styles.css */
 body {
-    font-family: 'Playwrite Magyarország', sans-serif; /* Change font family to Playwrite Magyarország */
+  font-family: "Playwrite Magyarország", sans-serif; /* Change font family to Playwrite Magyarország */
 
   background-color: #f8f9fa;
-  }
-  
-  .card {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .card-header {
-    background-color: #007bff;
-    color: #fff;
-  }
+}
+
+.card {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+  background-color: #007bff;
+  color: #fff;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
