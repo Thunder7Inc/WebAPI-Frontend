@@ -7,7 +7,7 @@ const Transaction = () => {
       var transactions = await res.json();
       var cardsHTML = transactions.map((transaction) => {
         return `
-      <div class="card" style="width: 18rem;">
+      <div class="card" style="width: 18rem; margin:0 5px;">
   <div class="card-body">
     <h5 class="card-title">Transaction Number : ${transaction.accountId}</h5>
     <h6 class="card-subtitle mb-2 text-muted">Transaction Type :  ${transaction.type}</h6>
