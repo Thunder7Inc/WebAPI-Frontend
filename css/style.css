@@ -34,3 +34,42 @@ body {
 ::-webkit-scrollbar {
   display: none;
 }
+
+/* Ensure the container is responsive */
+.container {
+  max-width: 1140px; /* Adjust the max-width as needed */
+}
+
+/* Make the image responsive */
+.img-fluid {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Adjust button size and spacing for smaller screens */
+.btn-lg {
+  width: auto;
+  padding: 10px 20px;
+}
+
+@media (max-width: 767px) {
+  .navbar-nav {
+    text-align: center;
+  }
+
+  .navbar-nav .nav-item {
+    margin-bottom: 10px;
+  }
+
+  .btn-lg {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+}
+
+#transactionsTable,
+th,
+td {
+  vertical-align: middle !important;
+  text-align: center !important;
+}
